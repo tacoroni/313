@@ -1,13 +1,15 @@
 #include <iostream>
 using namespace std;
 
-
+// matrix class and relevant functions
 class Matrix{
 public:
+    // member vars
     int rows;
     int cols;
     int **matrixdata;
 
+    //constuctor, using dynamic mem
     Matrix(int r, int c){
         rows = r;
         cols = c;
@@ -24,13 +26,14 @@ public:
         }
     }
 
+    // default constructor
     Matrix(){
         rows = 0;
         cols = 0;
         matrixdata = nullptr;
-
     }
 
+    //copy constructor
     Matrix(const Matrix& other){
         rows = other.rows;
         cols = other.cols;
@@ -46,15 +49,19 @@ public:
         }
     }
 
+    // destructor
     ~Matrix(){
         deleteMatrix();
     }
 
+    // easy way to insert matrix values
     void insertVal(int rowNum, int colNum, int val){
         matrixdata[rowNum][colNum] = val;
     }
 
+    // used to transpose the matrix
     Matrix Transpose(){
+        // create a new transpose matrix
         Matrix Transpose(cols, rows);
         for (int i = 0; i < rows; i ++){
             for (int j = 0; j < cols; j++){
@@ -64,12 +71,15 @@ public:
         return Transpose;
     }
 
+    // add two matricies together
     Matrix addMatricies(Matrix other){
+        // make sure dimensions are the same
         if (rows != other.rows || cols != other.cols){
             display();
             other.display();
             cout << "error here" << endl;
             return *this;
+        // add corressponding values
         }else{
             Matrix sum(rows, cols);
             for (int i = 0; i < rows; i++){
@@ -82,6 +92,7 @@ public:
         return *this;
     }
 
+    // multiply by a constant integer val
     void multiplyConstant(int constant){
         // var used to keep track of the matrix product
         int product;
@@ -95,14 +106,13 @@ public:
         }
     }
     
+    // multiply two matrices
     Matrix multiplyMatrix(Matrix other){
+        // make sure cols and rows match
         if (other.rows != cols){
-            display();
-            other.display();
-
-            cout << "error mult" << endl;
             return *this;
         }else{
+            // loop and preform matrix multiplication
             Matrix product(rows, other.cols);
 
             for (int i = 0; i < rows; i++){
@@ -113,6 +123,7 @@ public:
                 }
                 
             }
+            // return the new matrix
             return product;
 
         }
@@ -126,7 +137,7 @@ public:
         Matrix answer = addMatricies(product);
         return answer;
     }
-
+    // used to help the destructor
     void deleteMatrix(){
         for (int i = 0; i < rows; i++){
             delete matrixdata[i];
@@ -135,7 +146,9 @@ public:
         matrixdata = nullptr;
     }
 
+
     void display(){
+        // loop through and display the matrix
         for (int i = 0; i < rows; i++){
             cout << "[ ";
             for (int j = 0; j < cols; j++){
@@ -152,6 +165,7 @@ public:
 
 int main(){
 
+    // initizalize and set matrix values corresponding to assignment
     Matrix A(2, 2);
     A.insertVal(0, 0, 6);
     A.insertVal(0, 1, 4);
@@ -174,6 +188,7 @@ int main(){
     C.insertVal(1, 1, 3);
     C.insertVal(1, 2, 5);
 
+    // print the starting values
     cout << "A = " << endl;
     A.display();
     cout << "B = " << endl;
@@ -182,6 +197,7 @@ int main(){
     C.display();
     cout << endl;
 
+    // calculate matrix D.
     cout << "Calculating Equation...." << endl;
     cout << endl;
 
@@ -189,9 +205,6 @@ int main(){
     cout << "Result:" << endl;
     D.display();
     cout << endl;
-
-
-
 
     return 0;
 }
